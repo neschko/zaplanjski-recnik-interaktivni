@@ -163,9 +163,9 @@ export default function Recnik() {
             </button>
           );
         })}
-        {user && (scope !== "osnovni" || isAdmin) && (
+        {(scope !== "osnovni" || isAdmin) && (
           <Link
-            to={`/recnik/nova?scope=${scope}`}
+            to={user ? `/recnik/nova?scope=${scope}` : "/auth"}
             className="inline-flex items-center gap-1.5 rounded-full bg-primary text-primary-foreground px-4 py-1.5 text-sm hover:opacity-90"
           >
             <Plus className="h-4 w-4" /> {scope === "osnovni" ? "Додај у основни (admin)" : "Твоја нова реч"}
