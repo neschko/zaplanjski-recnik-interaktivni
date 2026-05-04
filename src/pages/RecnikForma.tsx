@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams, useSearchParams, Link, Navigate } from "react-router-dom";
-import { ArrowLeft, Sparkles, Loader2 } from "lucide-react";
+import { ArrowLeft, Sparkles, Loader2, Trash2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -165,9 +165,32 @@ export default function RecnikForma() {
               </select>
             </div>
           </div>
-          <Button type="submit" disabled={saving} className="w-full">
-            {saving ? "Чувам..." : isEdit ? "Сачувај измене" : "Додај у речник"}
-          </Button>
+          <div className="flex gap-2">
+            <Button type="submit" disabled={saving} className="flex-1">
+              {saving ? "Чувам..." : isEdit ? "Сачувај измене" : "Додај у речник"}
+            </Button>
+            {isEdit && (isAdmin || true) && (
+              <Button
+                type="button"
+                variant="destructive"
+                disabled={saving}
+                onClick={async () => {
+                  if (!confirm(`Обрисати „${word}"?`)) return;
+                  setSaving(true);
+                  const { error } = await supabase.from("entries").delete().eq("id", id!);
+                  setSaving(false);
+                  if (error) {
+                    toast({ title: "Грешка", description: error.message, variant: "destructive" });
+                    return;
+                  }
+                  toast({ title: "Обрисано" });
+                  nav("/recnik");
+                }}
+              >
+                <Trash2 className="h-4 w-4 mr-1" /> Обриши
+              </Button>
+            )}
+          </div>
         </form>
       </div>
     </div>
