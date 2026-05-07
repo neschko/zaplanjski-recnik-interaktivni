@@ -105,7 +105,7 @@ export default function RecnikForma() {
     nav(isEdit ? `/recnik/${res.data!.id}` : `/recnik?scope=${scope}&q=${encodeURIComponent(payload.word)}`);
   };
 
-  const allowedScopes = isAdmin ? SCOPES : SCOPES.filter(s => s.value !== "osnovni");
+  const allowedScopes = SCOPES.filter(s => s.value !== "osnovni");
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-2xl">
