@@ -71,7 +71,7 @@ export default function RecnikDetalj() {
   };
 
   const editOsnovniHref = entry && isOsnovni
-    ? `/recnik/nova?scope=osnovni&word=${encodeURIComponent(entry.word)}&def=${encodeURIComponent(entry.definition)}`
+    ? `/recnik/nova?scope=zajednicki&word=${encodeURIComponent(entry.word)}&def=${encodeURIComponent(entry.definition)}`
     : "#";
 
   const addComment = async () => {
