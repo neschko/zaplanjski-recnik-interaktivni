@@ -23,7 +23,9 @@ export default function RecnikForma() {
   const [examples, setExamples] = useState(params.get("examples") ?? "");
   const [synonyms, setSynonyms] = useState(params.get("synonyms") ?? "");
   const [dialect, setDialect] = useState<string>("svrljisko_zaplanjski");
-  const [scope, setScope] = useState<string>(params.get("scope") ?? "licni");
+  const initialScope = params.get("scope") === "osnovni" ? "zajednicki" : (params.get("scope") ?? "licni");
+  const [scope, setScope] = useState<string>(initialScope);
+  const fromOsnovni = params.get("scope") === "osnovni";
   const [saving, setSaving] = useState(false);
   const [suggesting, setSuggesting] = useState(false);
   const autoTriedRef = useRef(false);
