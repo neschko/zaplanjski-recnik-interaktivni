@@ -44,10 +44,22 @@ export default function Recnik() {
   const { user, isAdmin } = useAuth();
 
   const setParam = (k: string, v: string | null) => {
-    const np = new URLSearchParams(params);
-    if (v === null || v === "") np.delete(k);
-    else np.set(k, v);
-    setParams(np);
+    setParams((prev) => {
+      const np = new URLSearchParams(prev);
+      if (v === null || v === "") np.delete(k);
+      else np.set(k, v);
+      return np;
+    });
+  };
+  const setParamsMulti = (updates: Record<string, string | null>) => {
+    setParams((prev) => {
+      const np = new URLSearchParams(prev);
+      for (const [k, v] of Object.entries(updates)) {
+        if (v === null || v === "") np.delete(k);
+        else np.set(k, v);
+      }
+      return np;
+    });
   };
 
   useEffect(() => {
@@ -150,7 +162,7 @@ export default function Recnik() {
           return (
             <button
               key={s.value}
-              onClick={() => { setParam("scope", s.value); setParam("slovo", null); }}
+              onClick={() => setParamsMulti({ scope: s.value, slovo: null })}
               className={cn(
                 "inline-flex items-center gap-1.5 rounded-full px-4 py-1.5 text-sm border transition-colors",
                 scope === s.value
