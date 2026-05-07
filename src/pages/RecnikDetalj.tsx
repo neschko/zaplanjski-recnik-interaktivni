@@ -111,7 +111,7 @@ export default function RecnikDetalj() {
           )}
           {canEditOsnovni && (
             <Link to={editOsnovniHref}>
-              <Button variant="outline" size="sm"><Pencil className="h-4 w-4 mr-1" />Уреди (admin)</Button>
+              <Button variant="outline" size="sm"><Pencil className="h-4 w-4 mr-1" />Допуни у Заједнички (admin)</Button>
             </Link>
           )}
         </div>
