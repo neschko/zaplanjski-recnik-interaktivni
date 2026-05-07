@@ -144,9 +144,28 @@ export default function RecnikForma() {
           </p>
         )}
         {!isEdit && (
-          <Button type="button" variant="outline" onClick={suggest} disabled={suggesting || !word.trim()} className="w-full mb-4">
-            {suggesting ? <><Loader2 className="h-4 w-4 mr-2 animate-spin" /> Попуњавам АИ-јем...</> : <><Sparkles className="h-4 w-4 mr-2" /> Попуни помоћу АИ (САНУ стил)</>}
-          </Button>
+          <div className="mb-4 rounded-lg border border-border bg-muted/30 p-3 space-y-2">
+            <Label htmlFor="ai-context" className="text-xs">
+              Опис речи за АИ (контекст, значење, исказ у којем се појављује) — необавезно, али помаже тачности
+            </Label>
+            <Textarea
+              id="ai-context"
+              rows={3}
+              placeholder="нпр. „Чула сам од баке: ’Аздиса откако се ожени.’ — мислим да значи разметати се…"
+              value={aiContext}
+              onChange={(e) => setAiContext(e.target.value)}
+            />
+            <div className="flex gap-2">
+              <Button type="button" variant="outline" onClick={suggest} disabled={suggesting || !word.trim()} className="flex-1">
+                {suggesting ? <><Loader2 className="h-4 w-4 mr-2 animate-spin" /> Попуњавам АИ-јем...</> : <><Sparkles className="h-4 w-4 mr-2" /> Попуни помоћу АИ (САНУ стил)</>}
+              </Button>
+              {prevSnapshot && (
+                <Button type="button" variant="ghost" onClick={revertAi} disabled={suggesting}>
+                  Поништи АИ
+                </Button>
+              )}
+            </div>
+          </div>
         )}
         <form onSubmit={submit} className="space-y-4">
           <div>
