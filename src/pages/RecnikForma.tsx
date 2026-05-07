@@ -26,8 +26,12 @@ export default function RecnikForma() {
   const initialScope = params.get("scope") === "osnovni" ? "zajednicki" : (params.get("scope") ?? "licni");
   const [scope, setScope] = useState<string>(initialScope);
   const fromOsnovni = params.get("scope") === "osnovni";
+  const [aiContext, setAiContext] = useState(params.get("context") ?? "");
   const [saving, setSaving] = useState(false);
   const [suggesting, setSuggesting] = useState(false);
+  const [prevSnapshot, setPrevSnapshot] = useState<null | {
+    word: string; definition: string; examples: string; synonyms: string; dialect: string;
+  }>(null);
   const autoTriedRef = useRef(false);
 
   const suggest = async () => {
@@ -35,9 +39,11 @@ export default function RecnikForma() {
       toast({ title: "Унеси реч", description: "Реч је обавезна за предлог.", variant: "destructive" });
       return;
     }
+    // snapshot za revert
+    setPrevSnapshot({ word, definition, examples, synonyms, dialect });
     setSuggesting(true);
     const { data, error } = await supabase.functions.invoke("suggest-entry", {
-      body: { word: word.trim(), context: params.get("context") ?? undefined },
+      body: { word: word.trim(), context: aiContext.trim() || undefined },
     });
     setSuggesting(false);
     if (error || (data as any)?.error) {
@@ -51,8 +57,19 @@ export default function RecnikForma() {
       setExamples((s.examples ?? []).join("\n"));
       setSynonyms((s.synonyms ?? []).join(", "));
       if (s.dialect) setDialect(s.dialect);
-      toast({ title: "Предлог попуњен", description: "Прегледај и допуни пре чувања." });
+      toast({ title: "Предлог попуњен", description: "Прегледај и допуни пре чувања. Можеш и да поништиш измене." });
     }
+  };
+
+  const revertAi = () => {
+    if (!prevSnapshot) return;
+    setWord(prevSnapshot.word);
+    setDefinition(prevSnapshot.definition);
+    setExamples(prevSnapshot.examples);
+    setSynonyms(prevSnapshot.synonyms);
+    setDialect(prevSnapshot.dialect);
+    setPrevSnapshot(null);
+    toast({ title: "Враћено", description: "АИ предлог је поништен." });
   };
 
   useEffect(() => {
