@@ -71,7 +71,7 @@ export default function RecnikDetalj() {
   };
 
   const editOsnovniHref = entry && isOsnovni
-    ? `/recnik/nova?scope=osnovni&word=${encodeURIComponent(entry.word)}&def=${encodeURIComponent(entry.definition)}`
+    ? `/recnik/nova?scope=zajednicki&word=${encodeURIComponent(entry.word)}&def=${encodeURIComponent(entry.definition)}`
     : "#";
 
   const addComment = async () => {
@@ -111,7 +111,7 @@ export default function RecnikDetalj() {
           )}
           {canEditOsnovni && (
             <Link to={editOsnovniHref}>
-              <Button variant="outline" size="sm"><Pencil className="h-4 w-4 mr-1" />Уреди (admin)</Button>
+              <Button variant="outline" size="sm"><Pencil className="h-4 w-4 mr-1" />Допуни у Заједнички (admin)</Button>
             </Link>
           )}
         </div>

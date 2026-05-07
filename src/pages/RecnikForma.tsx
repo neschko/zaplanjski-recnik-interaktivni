@@ -23,7 +23,9 @@ export default function RecnikForma() {
   const [examples, setExamples] = useState(params.get("examples") ?? "");
   const [synonyms, setSynonyms] = useState(params.get("synonyms") ?? "");
   const [dialect, setDialect] = useState<string>("svrljisko_zaplanjski");
-  const [scope, setScope] = useState<string>(params.get("scope") ?? "licni");
+  const initialScope = params.get("scope") === "osnovni" ? "zajednicki" : (params.get("scope") ?? "licni");
+  const [scope, setScope] = useState<string>(initialScope);
+  const fromOsnovni = params.get("scope") === "osnovni";
   const [saving, setSaving] = useState(false);
   const [suggesting, setSuggesting] = useState(false);
   const autoTriedRef = useRef(false);
@@ -103,7 +105,7 @@ export default function RecnikForma() {
     nav(isEdit ? `/recnik/${res.data!.id}` : `/recnik?scope=${scope}&q=${encodeURIComponent(payload.word)}`);
   };
 
-  const allowedScopes = isAdmin ? SCOPES : SCOPES.filter(s => s.value !== "osnovni");
+  const allowedScopes = SCOPES.filter(s => s.value !== "osnovni");
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-2xl">
@@ -114,9 +116,14 @@ export default function RecnikForma() {
         <h1 className="font-serif text-2xl font-bold text-secondary mb-2">
           {isEdit ? "Уреди одредницу" : "Нова одредница"}
         </h1>
-        {!isEdit && (
+        {!isEdit && fromOsnovni && (
+          <p className="text-xs text-amber-600 dark:text-amber-400 mb-4">
+            Основни речник је непроменљив — измена ће бити сачувана као нова одредница у <strong>Заједнички</strong> речник.
+          </p>
+        )}
+        {!isEdit && !fromOsnovni && (
           <p className="text-xs text-muted-foreground mb-4">
-            Биће сачувано у <strong>{scope === "zajednicki" ? "Заједнички" : scope === "licni" ? "Лични" : "Основни"}</strong> речник. Можеш променити доле под „Опсег".
+            Биће сачувано у <strong>{scope === "zajednicki" ? "Заједнички" : "Лични"}</strong> речник. Можеш променити доле под „Опсег".
           </p>
         )}
         {!isEdit && (
