@@ -162,7 +162,7 @@ export default function Recnik() {
           return (
             <button
               key={s.value}
-              onClick={() => { setParam("scope", s.value); setParam("slovo", null); }}
+              onClick={() => setParamsMulti({ scope: s.value, slovo: null })}
               className={cn(
                 "inline-flex items-center gap-1.5 rounded-full px-4 py-1.5 text-sm border transition-colors",
                 scope === s.value
