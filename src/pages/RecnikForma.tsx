@@ -116,9 +116,14 @@ export default function RecnikForma() {
         <h1 className="font-serif text-2xl font-bold text-secondary mb-2">
           {isEdit ? "Уреди одредницу" : "Нова одредница"}
         </h1>
-        {!isEdit && (
+        {!isEdit && fromOsnovni && (
+          <p className="text-xs text-amber-600 dark:text-amber-400 mb-4">
+            Основни речник је непроменљив — измена ће бити сачувана као нова одредница у <strong>Заједнички</strong> речник.
+          </p>
+        )}
+        {!isEdit && !fromOsnovni && (
           <p className="text-xs text-muted-foreground mb-4">
-            Биће сачувано у <strong>{scope === "zajednicki" ? "Заједнички" : scope === "licni" ? "Лични" : "Основни"}</strong> речник. Можеш променити доле под „Опсег".
+            Биће сачувано у <strong>{scope === "zajednicki" ? "Заједнички" : "Лични"}</strong> речник. Можеш променити доле под „Опсег".
           </p>
         )}
         {!isEdit && (
