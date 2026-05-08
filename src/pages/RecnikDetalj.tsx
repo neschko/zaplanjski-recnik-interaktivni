@@ -76,10 +76,14 @@ export default function RecnikDetalj() {
     : "#";
 
   const addComment = async () => {
-    if (!user || !newComment.trim() || !entry) return;
-    const { error } = await supabase.from("comments").insert({
-      entry_id: entry.id, author_id: user.id, body: newComment.trim(),
-    });
+    if (!newComment.trim() || !entry) return;
+    const payload: any = {
+      entry_id: entry.id,
+      body: newComment.trim(),
+      author_id: user?.id ?? null,
+    };
+    if (!user) payload.guest_name = guestName.trim() || "Анонимни гост";
+    const { error } = await supabase.from("comments").insert(payload);
     if (error) toast({ title: "Грешка", description: error.message, variant: "destructive" });
     else { setNewComment(""); load(); }
   };
