@@ -69,15 +69,15 @@ export default function Layout() {
     <div className="min-h-screen flex flex-col bg-background">
       <header className="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur">
         <div className="container mx-auto flex flex-wrap items-center gap-x-6 gap-y-3 py-3">
-          <Link to="/" className="flex items-center gap-3 shrink-0">
-            <div className="h-10 w-10 rounded-xl bg-gradient-warm shadow-warm flex items-center justify-center text-primary-foreground font-serif text-lg">
+          <Link to="/" className="flex items-center gap-3 min-w-0 flex-1 sm:flex-initial">
+            <div className="h-10 w-10 shrink-0 rounded-xl bg-gradient-warm shadow-warm flex items-center justify-center text-primary-foreground font-serif text-lg">
               Д
             </div>
-            <div className="leading-tight">
-              <div className="font-serif text-lg font-semibold text-foreground">
+            <div className="leading-tight min-w-0">
+              <div className="font-serif text-base sm:text-lg font-semibold text-foreground">
                 Заплањски Речник
               </div>
-              <div className="text-xs text-muted-foreground">
+              <div className="text-[11px] sm:text-xs text-muted-foreground break-words whitespace-normal">
                 Жива реч и AI анализа дијалеката југоисточне Србије
               </div>
             </div>

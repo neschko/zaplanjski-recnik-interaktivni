@@ -254,6 +254,7 @@ export type Database = {
         | "sumadijsko_vojvodjanski"
         | "ostalo"
         | "nepoznato"
+        | "juzna_srbija"
       entry_scope: "osnovni" | "licni" | "zajednicki"
     }
     CompositeTypes: {
@@ -391,6 +392,7 @@ export const Constants = {
         "sumadijsko_vojvodjanski",
         "ostalo",
         "nepoznato",
+        "juzna_srbija",
       ],
       entry_scope: ["osnovni", "licni", "zajednicki"],
     },

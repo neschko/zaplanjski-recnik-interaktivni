@@ -1,0 +1,1 @@
+ALTER TYPE public.dialect ADD VALUE IF NOT EXISTS 'juzna_srbija';
