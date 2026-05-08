@@ -67,19 +67,55 @@ export async function downloadJSON() {
   triggerDownload(blob, "zaplanjski-recnik.json");
 }
 
+// Load TTF with Cyrillic glyphs and register with jsPDF (cached).
+const FONT_URLS = {
+  regular: "https://cdn.jsdelivr.net/gh/googlefonts/noto-fonts@main/hinted/ttf/NotoSerif/NotoSerif-Regular.ttf",
+  bold: "https://cdn.jsdelivr.net/gh/googlefonts/noto-fonts@main/hinted/ttf/NotoSerif/NotoSerif-Bold.ttf",
+  italic: "https://cdn.jsdelivr.net/gh/googlefonts/noto-fonts@main/hinted/ttf/NotoSerif/NotoSerif-Italic.ttf",
+};
+const fontCache: Partial<Record<keyof typeof FONT_URLS, string>> = {};
+
+async function fetchFontBase64(key: keyof typeof FONT_URLS): Promise<string> {
+  if (fontCache[key]) return fontCache[key]!;
+  const res = await fetch(FONT_URLS[key]);
+  if (!res.ok) throw new Error(`Не могу да преузмем фонт (${key})`);
+  const buf = new Uint8Array(await res.arrayBuffer());
+  let bin = "";
+  for (let i = 0; i < buf.length; i++) bin += String.fromCharCode(buf[i]);
+  const b64 = btoa(bin);
+  fontCache[key] = b64;
+  return b64;
+}
+
+async function registerCyrillicFont(doc: jsPDF) {
+  const [reg, bold, italic] = await Promise.all([
+    fetchFontBase64("regular"),
+    fetchFontBase64("bold"),
+    fetchFontBase64("italic"),
+  ]);
+  doc.addFileToVFS("NotoSerif-Regular.ttf", reg);
+  doc.addFont("NotoSerif-Regular.ttf", "NotoSerif", "normal");
+  doc.addFileToVFS("NotoSerif-Bold.ttf", bold);
+  doc.addFont("NotoSerif-Bold.ttf", "NotoSerif", "bold");
+  doc.addFileToVFS("NotoSerif-Italic.ttf", italic);
+  doc.addFont("NotoSerif-Italic.ttf", "NotoSerif", "italic");
+}
+
 export async function downloadPDF() {
   const entries = await getMergedOsnovni();
   const doc = new jsPDF({ unit: "pt", format: "a4" });
+  await registerCyrillicFont(doc);
+  const FONT = "NotoSerif";
   const pageW = doc.internal.pageSize.getWidth();
   const pageH = doc.internal.pageSize.getHeight();
   const margin = 40;
   let y = margin;
 
-  doc.setFont("times", "bold");
+  doc.setFont(FONT, "bold");
   doc.setFontSize(20);
   doc.text("Заплањски речник", pageW / 2, y, { align: "center" });
   y += 28;
-  doc.setFont("times", "italic");
+  doc.setFont(FONT, "italic");
   doc.setFontSize(10);
   doc.text(`Генерисано ${new Date().toLocaleString("sr-RS")} · ${entries.length} одредница`, pageW / 2, y, { align: "center" });
   y += 24;
@@ -90,12 +126,12 @@ export async function downloadPDF() {
       currentLetter = e.letter;
       if (y > pageH - 80) { doc.addPage(); y = margin; }
       y += 8;
-      doc.setFont("times", "bold");
+      doc.setFont(FONT, "bold");
       doc.setFontSize(16);
       doc.text(currentLetter, margin, y);
       y += 18;
     }
-    doc.setFont("times", "bold");
+    doc.setFont(FONT, "bold");
     doc.setFontSize(11);
     const head = `${e.word}${e.pos ? "  " + e.pos : ""}`;
     const headLines = doc.splitTextToSize(head, pageW - margin * 2);
@@ -103,7 +139,7 @@ export async function downloadPDF() {
     doc.text(headLines, margin, y);
     y += headLines.length * 14;
 
-    doc.setFont("times", "normal");
+    doc.setFont(FONT, "normal");
     doc.setFontSize(10);
     const defLines = doc.splitTextToSize(e.definition || "", pageW - margin * 2);
     for (const line of defLines) {
