@@ -14,7 +14,7 @@ interface Entry {
   examples: string[]; synonyms: string[]; owner_id: string | null; created_at: string;
   pos?: string;
 }
-interface Comment { id: string; body: string; author_id: string; created_at: string; }
+interface Comment { id: string; body: string; author_id: string | null; guest_name: string | null; created_at: string; }
 
 export default function RecnikDetalj() {
   const { id: rawId } = useParams();
