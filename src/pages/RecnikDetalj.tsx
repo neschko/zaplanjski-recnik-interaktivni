@@ -160,26 +160,39 @@ export default function RecnikDetalj() {
           <div className="font-serif text-lg text-secondary mb-3 flex items-center gap-2">
             <MessageCircle className="h-4 w-4" /> Коментари ({comments.length})
           </div>
-          {user ? (
-            <div className="flex gap-2 mb-4">
+          <div className="mb-4 space-y-2">
+            {!user && (
+              <input
+                type="text"
+                value={guestName}
+                onChange={(e) => setGuestName(e.target.value)}
+                placeholder="Твоје име (необавезно)"
+                maxLength={60}
+                className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm"
+              />
+            )}
+            <div className="flex gap-2">
               <Textarea
                 value={newComment}
                 onChange={(e) => setNewComment(e.target.value)}
-                placeholder="Допринеси својим тумачењем или примером..."
+                placeholder={user ? "Допринеси својим тумачењем или примером..." : "Коментариши као гост..."}
                 rows={2}
+                maxLength={1000}
               />
-              <Button onClick={addComment}>Пошаљи</Button>
+              <Button onClick={addComment} disabled={!newComment.trim()}>Пошаљи</Button>
             </div>
-          ) : (
-            <div className="text-sm text-muted-foreground mb-4">
-              <Link to="/auth" className="text-primary hover:underline">Пријави се</Link> да коментаришеш.
-            </div>
-          )}
+            {!user && (
+              <p className="text-xs text-muted-foreground">
+                Коментаришеш као гост. <Link to="/auth" className="text-primary hover:underline">Пријави се</Link> да коментар буде везан за твој налог.
+              </p>
+            )}
+          </div>
           <div className="space-y-3">
             {comments.map((c) => (
               <div key={c.id} className="text-sm border-l-2 border-border pl-3">
                 <p className="text-foreground/85 whitespace-pre-wrap">{c.body}</p>
                 <div className="text-xs text-muted-foreground mt-1">
+                  {(!c.author_id ? (c.guest_name || "Анонимни гост") + " · " : "")}
                   {new Date(c.created_at).toLocaleString("sr-RS")}
                 </div>
               </div>
