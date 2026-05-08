@@ -185,17 +185,19 @@ const xmlEscape = (s: string) =>
 export async function downloadEPUB() {
   const entries = await getMergedOsnovni();
   const zip = new JSZip();
+  // mimetype MUST be the first file, stored (uncompressed)
   zip.file("mimetype", "application/epub+zip", { compression: "STORE" });
 
   const metaInf = zip.folder("META-INF")!;
   metaInf.file("container.xml",
-    `<?xml version="1.0"?>
+    `<?xml version="1.0" encoding="UTF-8"?>
 <container version="1.0" xmlns="urn:oasis:names:tc:opendocument:xmlns:container">
   <rootfiles><rootfile full-path="OEBPS/content.opf" media-type="application/oebps-package+xml"/></rootfiles>
 </container>`);
 
   const oebps = zip.folder("OEBPS")!;
-  const uid = `urn:uuid:${crypto.randomUUID?.() ?? Date.now()}`;
+  const uid = `urn:uuid:${(crypto as any).randomUUID?.() ?? String(Date.now())}`;
+  const modified = new Date().toISOString().replace(/\.\d{3}Z$/, "Z");
 
   // group by letter
   const byLetter = new Map<string, ExportEntry[]>();
@@ -216,41 +218,63 @@ export async function downloadEPUB() {
     oebps.file(href,
       `<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="sr"><head><meta charset="utf-8"/><title>${xmlEscape(L)}</title></head>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="sr" lang="sr"><head><meta charset="utf-8"/><title>${xmlEscape(L)}</title></head>
 <body><h1>${xmlEscape(L)}</h1><dl>${items}</dl></body></html>`);
     chapters.push({ id, href, title: L });
   });
+
+  // nav.xhtml (EPUB3 toc)
+  oebps.file("nav.xhtml",
+    `<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops" xml:lang="sr" lang="sr"><head><meta charset="utf-8"/><title>Садржај</title></head>
+<body><nav epub:type="toc" id="toc"><h1>Садржај</h1><ol>
+${chapters.map(c => `<li><a href="${c.href}">${xmlEscape(c.title)}</a></li>`).join("\n")}
+</ol></nav></body></html>`);
+
+  // toc.ncx (EPUB2 fallback for older readers)
+  oebps.file("toc.ncx",
+    `<?xml version="1.0" encoding="UTF-8"?>
+<ncx xmlns="http://www.daisy.org/z3986/2005/ncx/" version="2005-1">
+  <head>
+    <meta name="dtb:uid" content="${uid}"/>
+    <meta name="dtb:depth" content="1"/>
+    <meta name="dtb:totalPageCount" content="0"/>
+    <meta name="dtb:maxPageNumber" content="0"/>
+  </head>
+  <docTitle><text>Заплањски речник</text></docTitle>
+  <navMap>
+    ${chapters.map((c, i) => `<navPoint id="np${i + 1}" playOrder="${i + 1}"><navLabel><text>${xmlEscape(c.title)}</text></navLabel><content src="${c.href}"/></navPoint>`).join("\n    ")}
+  </navMap>
+</ncx>`);
 
   const manifestItems = chapters.map(c => `<item id="${c.id}" href="${c.href}" media-type="application/xhtml+xml"/>`).join("\n    ");
   const spineItems = chapters.map(c => `<itemref idref="${c.id}"/>`).join("\n    ");
 
   oebps.file("content.opf",
     `<?xml version="1.0" encoding="UTF-8"?>
-<package xmlns="http://www.idpf.org/2007/opf" version="3.0" unique-identifier="bookid">
+<package xmlns="http://www.idpf.org/2007/opf" version="3.0" unique-identifier="bookid" xml:lang="sr">
   <metadata xmlns:dc="http://purl.org/dc/elements/1.1/">
     <dc:identifier id="bookid">${uid}</dc:identifier>
     <dc:title>Заплањски речник</dc:title>
     <dc:language>sr</dc:language>
-    <dc:date>${new Date().toISOString()}</dc:date>
-    <meta property="dcterms:modified">${new Date().toISOString().split(".")[0]}Z</meta>
+    <dc:creator>Заплањски речник</dc:creator>
+    <meta property="dcterms:modified">${modified}</meta>
   </metadata>
   <manifest>
     <item id="nav" href="nav.xhtml" media-type="application/xhtml+xml" properties="nav"/>
+    <item id="ncx" href="toc.ncx" media-type="application/x-dtbncx+xml"/>
     ${manifestItems}
   </manifest>
-  <spine>
+  <spine toc="ncx">
     ${spineItems}
   </spine>
 </package>`);
 
-  oebps.file("nav.xhtml",
-    `<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops"><head><title>Садржај</title></head>
-<body><nav epub:type="toc"><h1>Садржај</h1><ol>
-${chapters.map(c => `<li><a href="${c.href}">${xmlEscape(c.title)}</a></li>`).join("\n")}
-</ol></nav></body></html>`);
-
-  const blob = await zip.generateAsync({ type: "blob", mimeType: "application/epub+zip" });
+  const blob = await zip.generateAsync({
+    type: "blob",
+    mimeType: "application/epub+zip",
+    compression: "DEFLATE",
+  });
   triggerDownload(blob, "zaplanjski-recnik.epub");
 }
