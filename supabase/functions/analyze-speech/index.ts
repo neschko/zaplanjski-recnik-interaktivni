@@ -13,6 +13,7 @@ const DIALECT_VALUES = [
   "timocko_luznicki",
   "kosovsko_resavski",
   "sumadijsko_vojvodjanski",
+  "juzna_srbija",
   "ostalo",
   "nepoznato",
 ];
