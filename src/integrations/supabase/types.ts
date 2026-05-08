@@ -111,24 +111,27 @@ export type Database = {
       }
       comments: {
         Row: {
-          author_id: string
+          author_id: string | null
           body: string
           created_at: string
           entry_id: string
+          guest_name: string | null
           id: string
         }
         Insert: {
-          author_id: string
+          author_id?: string | null
           body: string
           created_at?: string
           entry_id: string
+          guest_name?: string | null
           id?: string
         }
         Update: {
-          author_id?: string
+          author_id?: string | null
           body?: string
           created_at?: string
           entry_id?: string
+          guest_name?: string | null
           id?: string
         }
         Relationships: []
