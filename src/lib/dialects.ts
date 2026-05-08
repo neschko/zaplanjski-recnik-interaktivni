@@ -4,6 +4,7 @@ export const DIALECTS = [
   { value: "timocko_luznicki", label: "Тимочко-лужнички" },
   { value: "kosovsko_resavski", label: "Косовско-ресавски" },
   { value: "sumadijsko_vojvodjanski", label: "Шумадијско-војвођански" },
+  { value: "juzna_srbija", label: "Јужна Србија" },
   { value: "ostalo", label: "Остало" },
   { value: "nepoznato", label: "Непознато" },
 ] as const;
