@@ -25,6 +25,7 @@ export default function RecnikDetalj() {
   const [entry, setEntry] = useState<Entry | null>(null);
   const [comments, setComments] = useState<Comment[]>([]);
   const [newComment, setNewComment] = useState("");
+  const [guestName, setGuestName] = useState("");
   const [analyses, setAnalyses] = useState<{ id: string; created_at: string }[]>([]);
 
   const load = async () => {
