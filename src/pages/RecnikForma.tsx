@@ -34,6 +34,9 @@ export default function RecnikForma() {
     word: string; definition: string; examples: string; synonyms: string; dialect: string;
   }>(null);
   const autoTriedRef = useRef(false);
+  const wordRef = useRef<HTMLInputElement>(null);
+  const defRef = useRef<HTMLTextAreaElement>(null);
+  const exRef = useRef<HTMLTextAreaElement>(null);
 
   const suggest = async () => {
     if (!word.trim()) {
