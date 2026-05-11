@@ -10,6 +10,7 @@ import { DIALECTS, SCOPES } from "@/lib/dialects";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "@/hooks/use-toast";
 import { isDuplicateInOsnovni, osnovniIdFromWord, getOsnovniById } from "@/lib/osnovniRecnik";
+import { AccentToolbar } from "@/components/AccentToolbar";
 
 export default function RecnikForma() {
   const { id } = useParams();
