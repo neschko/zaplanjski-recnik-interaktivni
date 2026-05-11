@@ -171,15 +171,22 @@ export default function RecnikDetalj() {
                 className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm"
               />
             )}
-            <div className="flex gap-2">
+            <div className="flex flex-col sm:flex-row gap-2">
               <Textarea
                 value={newComment}
                 onChange={(e) => setNewComment(e.target.value)}
                 placeholder={user ? "Допринеси својим тумачењем или примером..." : "Коментариши као гост..."}
-                rows={2}
+                rows={3}
                 maxLength={1000}
+                className="flex-1 text-base min-h-[88px]"
               />
-              <Button onClick={addComment} disabled={!newComment.trim()}>Пошаљи</Button>
+              <Button
+                onClick={addComment}
+                disabled={!newComment.trim()}
+                className="w-full sm:w-auto sm:self-end h-11"
+              >
+                Пошаљи
+              </Button>
             </div>
             {!user && (
               <p className="text-xs text-muted-foreground">
