@@ -10,6 +10,7 @@ import { DIALECTS, SCOPES } from "@/lib/dialects";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "@/hooks/use-toast";
 import { isDuplicateInOsnovni, osnovniIdFromWord, getOsnovniById } from "@/lib/osnovniRecnik";
+import { AccentToolbar } from "@/components/AccentToolbar";
 
 export default function RecnikForma() {
   const { id } = useParams();
@@ -33,6 +34,9 @@ export default function RecnikForma() {
     word: string; definition: string; examples: string; synonyms: string; dialect: string;
   }>(null);
   const autoTriedRef = useRef(false);
+  const wordRef = useRef<HTMLInputElement>(null);
+  const defRef = useRef<HTMLTextAreaElement>(null);
+  const exRef = useRef<HTMLTextAreaElement>(null);
 
   const suggest = async () => {
     if (!word.trim()) {
@@ -170,7 +174,8 @@ export default function RecnikForma() {
         <form onSubmit={submit} className="space-y-4">
           <div>
             <Label htmlFor="word">Реч *</Label>
-            <Input id="word" required value={word} onChange={(e) => setWord(e.target.value)} />
+            <Input id="word" ref={wordRef} required value={word} onChange={(e) => setWord(e.target.value)} />
+            <AccentToolbar targetRef={wordRef} />
             {!isEdit && word.trim() && isDuplicateInOsnovni(word) && (() => {
               const dup = getOsnovniById(osnovniIdFromWord(word))!;
               return (
@@ -182,11 +187,13 @@ export default function RecnikForma() {
           </div>
           <div>
             <Label htmlFor="def">Дефиниција *</Label>
-            <Textarea id="def" required rows={4} value={definition} onChange={(e) => setDefinition(e.target.value)} />
+            <Textarea id="def" ref={defRef} required rows={4} value={definition} onChange={(e) => setDefinition(e.target.value)} />
+            <AccentToolbar targetRef={defRef} />
           </div>
           <div>
             <Label htmlFor="ex">Примери (по један у линији)</Label>
-            <Textarea id="ex" rows={3} value={examples} onChange={(e) => setExamples(e.target.value)} />
+            <Textarea id="ex" ref={exRef} rows={3} value={examples} onChange={(e) => setExamples(e.target.value)} />
+            <AccentToolbar targetRef={exRef} />
           </div>
           <div>
             <Label htmlFor="syn">Синоними (одвојени зарезом)</Label>
