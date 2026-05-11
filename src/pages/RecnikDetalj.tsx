@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { ArrowLeft, MessageCircle, Trash2, Pencil } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -27,6 +27,8 @@ export default function RecnikDetalj() {
   const [newComment, setNewComment] = useState("");
   const [guestName, setGuestName] = useState("");
   const [analyses, setAnalyses] = useState<{ id: string; created_at: string }[]>([]);
+  const commentRef = useRef<HTMLTextAreaElement>(null);
+  const isMobile = () => typeof window !== "undefined" && window.matchMedia("(max-width: 640px)").matches;
 
   const load = async () => {
     if (isOsnovni) {
@@ -85,8 +87,19 @@ export default function RecnikDetalj() {
     if (!user) payload.guest_name = guestName.trim() || "Анонимни гост";
     const { error } = await supabase.from("comments").insert(payload);
     if (error) toast({ title: "Грешка", description: error.message, variant: "destructive" });
-    else { setNewComment(""); load(); }
+    else {
+      setNewComment("");
+      if (isMobile()) commentRef.current?.blur();
+      load();
+    }
   };
+
+  useEffect(() => {
+    if (entry && isMobile()) {
+      const t = setTimeout(() => commentRef.current?.focus({ preventScroll: true }), 350);
+      return () => clearTimeout(t);
+    }
+  }, [entry?.id]);
 
   if (!entry) return <div className="container mx-auto py-12 text-center text-muted-foreground">Учитавање...</div>;
 
@@ -173,6 +186,7 @@ export default function RecnikDetalj() {
             )}
             <div className="flex flex-col sm:flex-row gap-2">
               <Textarea
+                ref={commentRef}
                 value={newComment}
                 onChange={(e) => setNewComment(e.target.value)}
                 placeholder={user ? "Допринеси својим тумачењем или примером..." : "Коментариши као гост..."}
