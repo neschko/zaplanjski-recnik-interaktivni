@@ -69,6 +69,7 @@ export default {
       },
       backgroundImage: {
         'gradient-warm': 'linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)))',
+        'gradient-mosaic': 'linear-gradient(135deg, hsl(188 55% 48%) 0%, hsl(22 28% 26%) 45%, hsl(8 68% 55%) 75%, hsl(40 70% 55%) 100%)',
       },
       boxShadow: {
         'warm': '0 10px 30px -12px hsl(var(--primary) / 0.35)',

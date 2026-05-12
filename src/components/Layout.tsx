@@ -70,8 +70,9 @@ export default function Layout() {
       <header className="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur">
         <div className="container mx-auto flex flex-wrap items-center gap-x-6 gap-y-3 py-3">
           <Link to="/" className="flex items-center gap-3 min-w-0 flex-1 sm:flex-initial">
-            <div className="h-10 w-10 shrink-0 rounded-xl bg-gradient-warm shadow-warm flex items-center justify-center text-primary-foreground font-serif text-lg">
-              Д
+            <div className="relative h-11 px-3 shrink-0 rounded-xl bg-gradient-mosaic shadow-warm flex items-center justify-center font-serif text-base font-semibold tracking-wide text-white ring-1 ring-white/30 ring-offset-2 ring-offset-background overflow-hidden">
+              <span className="absolute inset-0 opacity-30 mix-blend-overlay" style={{backgroundImage:'radial-gradient(circle at 20% 30%, white 0 2px, transparent 3px), radial-gradient(circle at 70% 70%, white 0 2px, transparent 3px)', backgroundSize:'14px 14px'}} />
+              <span className="relative drop-shadow-[0_1px_1px_rgba(0,0,0,0.35)]">З.Речник</span>
             </div>
             <div className="leading-tight min-w-0">
               <div className="font-serif text-base sm:text-lg font-semibold text-foreground">
