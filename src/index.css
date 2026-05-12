@@ -8,35 +8,38 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Заплањски Речник palette: warm cream + deep burgundy */
-    --background: 30 25% 96%;
-    --foreground: 0 20% 15%;
+    /* Палета: бирузна, окер/мустар, теракота‑црвена, тамно браон, крем */
+    --background: 40 35% 96%;
+    --foreground: 20 30% 18%;
 
-    --card: 30 20% 98%;
-    --card-foreground: 0 20% 15%;
+    --card: 40 30% 98%;
+    --card-foreground: 20 30% 18%;
 
-    --popover: 30 20% 98%;
-    --popover-foreground: 0 20% 15%;
+    --popover: 40 30% 98%;
+    --popover-foreground: 20 30% 18%;
 
-    --primary: 0 45% 30%;
-    --primary-foreground: 30 25% 96%;
-    --primary-glow: 0 55% 45%;
+    /* primary = тамно браон (озбиљан, контрастан на крему) */
+    --primary: 22 28% 26%;
+    --primary-foreground: 40 35% 96%;
+    --primary-glow: 8 68% 55%;
 
-    --secondary: 0 45% 30%;
-    --secondary-foreground: 30 25% 96%;
+    /* secondary = бирузна */
+    --secondary: 188 55% 48%;
+    --secondary-foreground: 40 35% 96%;
 
-    --muted: 30 15% 92%;
-    --muted-foreground: 0 10% 45%;
+    --muted: 40 20% 91%;
+    --muted-foreground: 22 15% 40%;
 
-    --accent: 30 20% 88%;
-    --accent-foreground: 0 45% 30%;
+    /* accent = мустар/окер */
+    --accent: 40 65% 88%;
+    --accent-foreground: 22 35% 25%;
 
-    --destructive: 0 70% 45%;
-    --destructive-foreground: 30 25% 96%;
+    --destructive: 8 72% 52%;
+    --destructive-foreground: 40 35% 96%;
 
-    --border: 30 15% 85%;
-    --input: 30 15% 85%;
-    --ring: 0 45% 30%;
+    --border: 22 18% 84%;
+    --input: 22 18% 84%;
+    --ring: 188 55% 48%;
 
     --radius: 0.75rem;
 
