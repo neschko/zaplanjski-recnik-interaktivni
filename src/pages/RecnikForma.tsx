@@ -138,7 +138,7 @@ export default function RecnikForma() {
           {isEdit ? "Уреди одредницу" : "Нова одредница"}
         </h1>
         {!isEdit && fromOsnovni && (
-          <p className="text-xs text-amber-600 dark:text-amber-400 mb-4">
+          <p className="text-xs text-[hsl(var(--primary-glow))] mb-4">
             Основни речник је непроменљив — измена ће бити сачувана као нова одредница у <strong>Заједнички</strong> речник.
           </p>
         )}
@@ -179,7 +179,7 @@ export default function RecnikForma() {
             {!isEdit && word.trim() && isDuplicateInOsnovni(word) && (() => {
               const dup = getOsnovniById(osnovniIdFromWord(word))!;
               return (
-                <p className="text-xs text-amber-600 dark:text-amber-400 mt-1.5">
+                <p className="text-xs text-[hsl(var(--primary-glow))] mt-1.5">
                   ⚠ Већ постоји у Основном речнику као <Link to={`/recnik/osnovni:${dup.id}`} className="underline font-medium">{dup.word}</Link> — {dup.definition.slice(0, 80)}{dup.definition.length > 80 ? "…" : ""}
                 </p>
               );
