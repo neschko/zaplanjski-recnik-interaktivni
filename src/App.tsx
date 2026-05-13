@@ -38,6 +38,7 @@ const App = () => (
               <Route path="/analiza/:id" element={<AnalizaDetalj />} />
               <Route path="/komentari" element={<Komentari />} />
               <Route path="/upravljanje" element={<Upravljanje />} />
+              <Route path="/upravljanje/ocr-pregled" element={<UpravljanjeOcr />} />
               <Route path="/uputstvo" element={<Uputstvo />} />
               <Route path="/auth" element={<Auth />} />
               <Route path="*" element={<NotFound />} />
