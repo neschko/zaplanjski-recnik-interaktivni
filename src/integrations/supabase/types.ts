@@ -189,6 +189,63 @@ export type Database = {
           },
         ]
       }
+      osnovni_corrections: {
+        Row: {
+          approved_at: string
+          approved_by: string
+          confidence: number | null
+          corrected: string
+          entry_id: string
+          field: string
+          id: string
+          original: string
+          reason: string | null
+        }
+        Insert: {
+          approved_at?: string
+          approved_by: string
+          confidence?: number | null
+          corrected: string
+          entry_id: string
+          field: string
+          id?: string
+          original: string
+          reason?: string | null
+        }
+        Update: {
+          approved_at?: string
+          approved_by?: string
+          confidence?: number | null
+          corrected?: string
+          entry_id?: string
+          field?: string
+          id?: string
+          original?: string
+          reason?: string | null
+        }
+        Relationships: []
+      }
+      osnovni_review_progress: {
+        Row: {
+          entry_id: string
+          id: string
+          scanned_at: string
+          suggestions_count: number
+        }
+        Insert: {
+          entry_id: string
+          id?: string
+          scanned_at?: string
+          suggestions_count?: number
+        }
+        Update: {
+          entry_id?: string
+          id?: string
+          scanned_at?: string
+          suggestions_count?: number
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string

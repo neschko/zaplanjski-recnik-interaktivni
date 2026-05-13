@@ -97,6 +97,19 @@ export default function Upravljanje() {
       </div>
 
       {isAdmin && (
+        <section className="mt-8">
+          <Link
+            to="/upravljanje/ocr-pregled"
+            className="inline-flex items-center gap-2 rounded-lg border border-border bg-card hover:bg-accent transition px-4 py-3"
+          >
+            <Search className="h-4 w-4 text-primary" />
+            <span className="font-medium">АИ преглед OCR грешака</span>
+            <span className="text-xs text-muted-foreground ml-1">— скенирај Основни речник и одобравај исправке</span>
+          </Link>
+        </section>
+      )}
+
+      {isAdmin && (
         <section className="mt-12">
           <div className="flex items-baseline justify-between gap-3 flex-wrap">
             <h2 className="font-serif text-xl text-secondary">Админ панел — све одреднице ({all.length})</h2>
