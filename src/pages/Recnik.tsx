@@ -36,6 +36,7 @@ export default function Recnik() {
   const [params, setParams] = useSearchParams();
   const scope = (params.get("scope") ?? "osnovni") as "osnovni" | "licni" | "zajednicki";
   const letter = params.get("slovo");
+  const category = params.get("cat");
   const q = params.get("q") ?? "";
   const [search, setSearch] = useState(q);
   const [items, setItems] = useState<ListItem[]>([]);
