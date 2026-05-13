@@ -204,8 +204,8 @@ export default function UpravljanjeOcr() {
         {items.length === 0 && !running && (
           <p className="text-sm text-muted-foreground italic mt-6">
             {totalScanned === 0
-              ? "Још нема скенираних одредница. Кликни „Скенирај" да почнеш."
-              : "Нема активних предлога. Скенирај следећи батч."}
+              ? 'Још нема скенираних одредница. Кликни „Скенирај“ да почнеш.'
+              : 'Нема активних предлога. Скенирај следећи батч.'}
           </p>
         )}
       </div>
