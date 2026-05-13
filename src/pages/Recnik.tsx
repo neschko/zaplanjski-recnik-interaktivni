@@ -69,7 +69,7 @@ export default function Recnik() {
 
     if (scope === "osnovni") {
       (async () => {
-        const results = searchOsnovni({ letter, q });
+        const results = searchOsnovni({ letter, q, category });
         const mapped: ListItem[] = results.slice(0, 500).map((e: OsnovniEntry) => ({
           id: `osnovni:${e.id}`,
           word: e.word,
