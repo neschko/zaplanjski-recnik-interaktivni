@@ -121,7 +121,7 @@ export default function Recnik() {
       setLoading(false);
     });
     return () => { cancelled = true; };
-  }, [scope, letter, q]);
+  }, [scope, letter, q, category]);
 
   const totalsByLetter = useMemo(() => {
     if (scope === "osnovni") return OSNOVNI_TOTALS_BY_LETTER;
