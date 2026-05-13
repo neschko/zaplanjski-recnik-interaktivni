@@ -39,8 +39,18 @@ export const OSNOVNI_TOTALS_BY_LETTER: Record<string, number> = (() => {
   return m;
 })();
 
-export function searchOsnovni(opts: { letter?: string | null; q?: string | null }): OsnovniEntry[] {
-  const { letter, q } = opts;
+/** Counts per category. */
+export const OSNOVNI_BY_CATEGORY: Record<string, number> = (() => {
+  const m: Record<string, number> = {};
+  for (const e of OSNOVNI_ENTRIES) {
+    const c = e.category || "Остало";
+    m[c] = (m[c] ?? 0) + 1;
+  }
+  return m;
+})();
+
+export function searchOsnovni(opts: { letter?: string | null; q?: string | null; category?: string | null }): OsnovniEntry[] {
+  const { letter, q, category } = opts;
   const ql = q?.trim().toLowerCase() ?? "";
   const norm = (s: string) => s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
   return OSNOVNI_ENTRIES.filter((e) => {
@@ -48,6 +58,7 @@ export function searchOsnovni(opts: { letter?: string | null; q?: string | null 
       const first = norm(e.word.charAt(0)).toUpperCase();
       if (first !== letter.toUpperCase()) return false;
     }
+    if (category && e.category !== category) return false;
     if (ql) {
       const hay = norm(e.word) + " " + norm(e.definition);
       if (!hay.includes(norm(ql))) return false;

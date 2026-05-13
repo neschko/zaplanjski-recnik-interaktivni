@@ -36,6 +36,7 @@ export default function Recnik() {
   const [params, setParams] = useSearchParams();
   const scope = (params.get("scope") ?? "osnovni") as "osnovni" | "licni" | "zajednicki";
   const letter = params.get("slovo");
+  const category = params.get("cat");
   const q = params.get("q") ?? "";
   const [search, setSearch] = useState(q);
   const [items, setItems] = useState<ListItem[]>([]);
@@ -68,7 +69,7 @@ export default function Recnik() {
 
     if (scope === "osnovni") {
       (async () => {
-        const results = searchOsnovni({ letter, q });
+        const results = searchOsnovni({ letter, q, category });
         const mapped: ListItem[] = results.slice(0, 500).map((e: OsnovniEntry) => ({
           id: `osnovni:${e.id}`,
           word: e.word,
@@ -120,7 +121,7 @@ export default function Recnik() {
       setLoading(false);
     });
     return () => { cancelled = true; };
-  }, [scope, letter, q]);
+  }, [scope, letter, q, category]);
 
   const totalsByLetter = useMemo(() => {
     if (scope === "osnovni") return OSNOVNI_TOTALS_BY_LETTER;
@@ -155,6 +156,17 @@ export default function Recnik() {
           className="pl-10 h-12 text-base"
         />
       </form>
+
+      {category && (
+        <div className="max-w-2xl mx-auto mt-3 flex justify-center">
+          <button
+            onClick={() => setParam("cat", null)}
+            className="inline-flex items-center gap-2 rounded-full bg-accent text-accent-foreground px-3 py-1 text-sm border border-border hover:opacity-80"
+          >
+            Категорија: <strong>{category}</strong> · ✕
+          </button>
+        </div>
+      )}
 
       <div className="flex flex-wrap items-center justify-center gap-2 mt-6">
         {SCOPES.map((s) => {
