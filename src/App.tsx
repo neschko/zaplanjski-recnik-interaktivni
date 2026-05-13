@@ -13,6 +13,7 @@ import Analiza from "./pages/Analiza";
 import AnalizaDetalj from "./pages/AnalizaDetalj";
 import Komentari from "./pages/Komentari";
 import Upravljanje from "./pages/Upravljanje";
+import UpravljanjeOcr from "./pages/UpravljanjeOcr";
 import Uputstvo from "./pages/Uputstvo";
 import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
