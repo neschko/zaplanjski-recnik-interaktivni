@@ -157,6 +157,17 @@ export default function Recnik() {
         />
       </form>
 
+      {category && (
+        <div className="max-w-2xl mx-auto mt-3 flex justify-center">
+          <button
+            onClick={() => setParam("cat", null)}
+            className="inline-flex items-center gap-2 rounded-full bg-accent text-accent-foreground px-3 py-1 text-sm border border-border hover:opacity-80"
+          >
+            Категорија: <strong>{category}</strong> · ✕
+          </button>
+        </div>
+      )}
+
       <div className="flex flex-wrap items-center justify-center gap-2 mt-6">
         {SCOPES.map((s) => {
           const Icon = s.value === "osnovni" ? BookOpen : s.value === "licni" ? User : Users;
