@@ -9,6 +9,7 @@ import { dialectLabel, scopeLabel } from "@/lib/dialects";
 import { SCOPES } from "@/lib/dialects";
 import { toast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
+import UpravljanjeUloge from "@/components/UpravljanjeUloge";
 
 type Entry = {
   id: string;
