@@ -110,6 +110,8 @@ export default function Upravljanje() {
         </section>
       )}
 
+      {isAdmin && <UpravljanjeUloge />}
+
       {isAdmin && (
         <section className="mt-12">
           <div className="flex items-baseline justify-between gap-3 flex-wrap">
