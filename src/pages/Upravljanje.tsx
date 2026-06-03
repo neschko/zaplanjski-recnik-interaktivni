@@ -9,6 +9,7 @@ import { dialectLabel, scopeLabel } from "@/lib/dialects";
 import { SCOPES } from "@/lib/dialects";
 import { toast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
+import UpravljanjeUloge from "@/components/UpravljanjeUloge";
 
 type Entry = {
   id: string;
@@ -108,6 +109,8 @@ export default function Upravljanje() {
           </Link>
         </section>
       )}
+
+      {isAdmin && <UpravljanjeUloge />}
 
       {isAdmin && (
         <section className="mt-12">
