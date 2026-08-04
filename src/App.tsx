@@ -15,6 +15,7 @@ import Komentari from "./pages/Komentari";
 import Upravljanje from "./pages/Upravljanje";
 import UpravljanjeOcr from "./pages/UpravljanjeOcr";
 import Uputstvo from "./pages/Uputstvo";
+import Api from "./pages/Api";
 import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
 
@@ -40,6 +41,7 @@ const App = () => (
               <Route path="/upravljanje" element={<Upravljanje />} />
               <Route path="/upravljanje/ocr-pregled" element={<UpravljanjeOcr />} />
               <Route path="/uputstvo" element={<Uputstvo />} />
+              <Route path="/api" element={<Api />} />
               <Route path="/auth" element={<Auth />} />
               <Route path="*" element={<NotFound />} />
             </Route>
