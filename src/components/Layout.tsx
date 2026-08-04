@@ -1,5 +1,5 @@
 import { NavLink, Outlet, Link } from "react-router-dom";
-import { BookOpen, Sparkles, MessageCircle, Settings as SettingsIcon, BookMarked, Home, Moon, Sun, Loader2 } from "lucide-react";
+import { BookOpen, Sparkles, MessageCircle, Settings as SettingsIcon, BookMarked, Code2, Home, Moon, Sun, Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { downloadPDF, downloadDOCX, downloadEPUB, downloadJSON } from "@/lib/recnikExport";
@@ -11,6 +11,7 @@ const navItems = [
   { to: "/analiza", label: "Анализа", icon: Sparkles },
   { to: "/komentari", label: "Коментари", icon: MessageCircle },
   { to: "/uputstvo", label: "Упутство", icon: BookMarked },
+  { to: "/api", label: "API", icon: Code2 },
   { to: "/upravljanje", label: "Управљање", icon: SettingsIcon },
 ];
 
